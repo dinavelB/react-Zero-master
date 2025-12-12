@@ -15,3 +15,14 @@ see a js version of all jsx, after that in the src in the index.html, put main.j
 2# add the webpack config js, eidt the package json and add the babel.config
 3# then run npx webpack --mode development, u should see a bundle js
 4# npm start to start the server.
+
+++++++prettier++++++
+1# install prettier extension,
+2# ctrl , and seacrhdefault formatter, select prettier, search save on format check editor something.
+3# create the prettier json .prettierrc/ .prettierrc.json 
+    -   {
+            "singleQuote": true,
+            "semi": false,
+            "tabWidth": 2,
+            "trailingComma": "es5"
+        }
