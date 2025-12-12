@@ -1,0 +1,9 @@
+#1Routes are pages. when it comes to react. use for navigating.
+#2 in spa routing with raw NodeJS, the main entry point is the main.jsx.
+#3 The existSync method in filesystem, means it checks if the file is existing on the path
+#4 the ...spread operator makes new array with those previous value, think of it creating a new array and you have an ol array, you inclue it on the new one by spread operator, and later on add the new values
+#5 implicit in arrow functions returns auto no curly brackets, explicit returns, declares return keyword and uses curly bracket
+#6 flow of data is, fetch   json string, then the server recives it as an object and, turnns it again as a string cause http cant passed an object, then later if gonna be used, turned into obj againcausse you cant use stringify json
+#7 nodeJS cant understand jsx, so we use babel translator then we bundled it to webpack for the browser to understand, this 
+set up is for nodeJS + react without dev server. purely nodeJS server
+#8 fetch is a promise, it will return a value basaed on the dynamic routing response aka API

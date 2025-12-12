@@ -1,0 +1,6 @@
+
+async function fetchLatestData() {
+    const res = await fetch("http://localhost:3000/get-latest-data");
+    const data = await res.json();
+    console.log("Latest data received by server:", data);
+}
