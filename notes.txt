@@ -7,3 +7,5 @@
 #7 nodeJS cant understand jsx, so we use babel translator then we bundled it to webpack for the browser to understand, this 
 set up is for nodeJS + react without dev server. purely nodeJS server
 #8 fetch is a promise, it will return a value basaed on the dynamic routing response aka API
+#9 post data can be saved in the object and later on the client request fetch, we will send the get data, or the post the data that is stored int the object.
+#10 useEffect is gonna run the block code if the varible its watching changes.

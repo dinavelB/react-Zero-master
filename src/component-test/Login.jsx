@@ -11,7 +11,7 @@ export function LoginPage() {
   //for class in input
   const [username, setUsername] = useState(false);
   const [password, setPassword] = useState(false);
-  cosnt[(change, setChange)] = useState("");
+  const [change, setChange] = useState("");
 
   ///this is how you store a data in use state, in this sample,
   // we store an object. perfect for sendisn multiple data
@@ -40,7 +40,6 @@ export function LoginPage() {
       body: JSON.stringify(data),
     });
     console.log("Data sent successfully: ", data);
-    localStorage.setItem("username", data.username);
     navigate("/home");
   };
 
@@ -83,7 +82,7 @@ export function LoginPage() {
               />
               <input
                 type="password"
-                name="userpassword"
+                name="password"
                 placeholder="Enter your password"
                 onFocus={() => setPassword(true)}
                 onBlur={() => setPassword(false)}
