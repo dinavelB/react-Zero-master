@@ -16,6 +16,7 @@ export function LoginPage() {
   ///this is how you store a data in use state, in this sample,
   // we store an object. perfect for sendisn multiple data
   const [data, setData] = useState({
+    //required value
     username: "",
     password: "",
   });
