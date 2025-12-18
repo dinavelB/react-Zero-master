@@ -26,3 +26,9 @@ see a js version of all jsx, after that in the src in the index.html, put main.j
             "tabWidth": 2,
             "trailingComma": "es5"
         }
+
+
+
+Commands:
+
+# jsx to js: npx babel src --out-dir src-compiled --extensions ".js,.jsx" --presets @babel/preset-env,@babel/preset-react --watch

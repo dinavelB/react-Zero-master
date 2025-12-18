@@ -104,18 +104,24 @@ body {
 }
 .form-container {
   width: 100%;
-  height: 500px;
+  height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  font-family: "Google Sans";
+}
+.form-container h1 {
+  font-family: "Krona One";
+  background: linear-gradient(90deg, #f434d1, #1921fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .create-account-form {
   display: flex;
   flex-direction: column;
   width: 500px;
   gap: 10px;
-  font-family: "Google Sans";
 }
 .create-account-form button {
   margin-top: 20px;

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home } from "../component-test/Home";
-import { LoginPage } from "../component-test/Login";
-import CreateAccount from "./CreateAccount";
+import { CreateAccount } from "./CreateAccount";
+import { Home } from "./Home";
+import { LoginPage } from "./Login";
 
 export function Navigation() {
   return (

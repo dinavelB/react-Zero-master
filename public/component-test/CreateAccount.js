@@ -14,140 +14,87 @@ function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) 
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
-import "../../public/components.css";
-import image from "../imageLoginPage.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import "animate.css";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-export function LoginPage() {
-  //for class in input
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    username = _useState2[0],
-    setUsername = _useState2[1];
-  var _useState3 = useState(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    password = _useState4[0],
-    setPassword = _useState4[1];
-  var _useState5 = useState(""),
-    _useState6 = _slicedToArray(_useState5, 2),
-    change = _useState6[0],
-    setChange = _useState6[1];
-
-  ///this is how you store a data in use state, in this sample,
-  // we store an object. perfect for sendisn multiple data
-  var _useState7 = useState({
-      //required value
+import { useNavigate } from "react-router-dom";
+import "../../public/components.css";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+console.log("CreateAccount.jsx loaded");
+export function CreateAccount() {
+  var nav = useNavigate();
+  var _useState = useState({
       username: "",
+      email: "",
       password: ""
     }),
-    _useState8 = _slicedToArray(_useState7, 2),
-    data = _useState8[0],
-    setData = _useState8[1];
-
-  //implicit return means it return itself, must be no curky brackets,
-  //otherwise explicit, returning an element because it inside the curly bracket
-  var handleChange = function handleChange(e) {
-    var _e$target = e.target,
-      name = _e$target.name,
-      value = _e$target.value; //name is on the input.
-    setData(function (prev) {
-      return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, value));
-    });
+    _useState2 = _slicedToArray(_useState, 2),
+    userData = _useState2[0],
+    setUserData = _useState2[1];
+  var passValue = function passValue(e) {
+    setUserData(_objectSpread(_objectSpread({}, userData), {}, _defineProperty({}, e.target.name, e.target.value)));
   };
-  var sendData = /*#__PURE__*/function () {
+  var createAccount = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var response;
+      var sendData;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
           case 0:
             e.preventDefault();
-
-            //this is a backend api only
             _context.n = 1;
-            return fetch("submit-response", {
+            return fetch("/create-account", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
               },
-              body: JSON.stringify(data)
+              body: JSON.stringify(userData)
             });
           case 1:
-            response = _context.v;
-            console.log("Data sent successfully: ", data);
-            navigate("/home");
+            sendData = _context.v;
+            console.log("Data sent at route: '/create-account'");
+            nav("/login");
           case 2:
             return _context.a(2);
         }
       }, _callee);
     }));
-    return function sendData(_x) {
+    return function createAccount(_x) {
       return _ref.apply(this, arguments);
     };
   }();
-  var navigate = useNavigate();
-  return /*#__PURE__*/_jsx(_Fragment, {
-    children: /*#__PURE__*/_jsx("section", {
-      id: "container",
-      children: /*#__PURE__*/_jsxs("section", {
-        id: "loginContainer",
-        children: [/*#__PURE__*/_jsx("img", {
-          src: image,
-          alt: ""
-        }), /*#__PURE__*/_jsxs("div", {
-          id: "form",
-          children: [/*#__PURE__*/_jsx("label", {
-            htmlFor: "",
-            id: "headText",
-            children: "Login"
-          }), /*#__PURE__*/_jsxs("div", {
-            className: "inputContainer",
-            children: [/*#__PURE__*/_jsx(FontAwesomeIcon, {
-              icon: faUser,
-              className: "animate__animated inputIcon ".concat(username ? "smoothBounce" : "")
-            }), /*#__PURE__*/_jsx("input", {
-              type: "text",
-              name: "username",
-              placeholder: "Enter your username",
-              onFocus: function onFocus() {
-                setUsername(false);
-                setTimeout(function () {
-                  return setUsername(true);
-                }, 5);
-              },
-              onBlur: function onBlur() {
-                return setUsername(false);
-              },
-              onChange: handleChange
-            })]
-          }), /*#__PURE__*/_jsxs("div", {
-            className: "inputContainer",
-            children: [/*#__PURE__*/_jsx(FontAwesomeIcon, {
-              icon: faEye,
-              className: "inputIcon animate__animated ".concat(password ? "smoothBounce" : "")
-            }), /*#__PURE__*/_jsx("input", {
-              type: "password",
-              name: "password",
-              placeholder: "Enter your password",
-              onFocus: function onFocus() {
-                return setPassword(true);
-              },
-              onBlur: function onBlur() {
-                return setPassword(false);
-              },
-              onChange: handleChange
-            })]
-          }), /*#__PURE__*/_jsxs("button", {
-            id: "loginBtn",
-            onClick: sendData,
-            children: [" ", "Login", " "]
-          })]
-        })]
-      })
-    })
+  return /*#__PURE__*/_jsxs("section", {
+    className: "form-container",
+    children: [/*#__PURE__*/_jsx("h1", {
+      children: "Create Account"
+    }), /*#__PURE__*/_jsxs("form", {
+      action: "",
+      onSubmit: createAccount,
+      className: "create-account-form",
+      children: [/*#__PURE__*/_jsx("label", {
+        htmlFor: "",
+        children: "Username"
+      }), /*#__PURE__*/_jsx("input", {
+        type: "text",
+        placeholder: "enter your username",
+        name: "username",
+        onChange: passValue
+      }), /*#__PURE__*/_jsx("label", {
+        htmlFor: "",
+        children: "Email"
+      }), /*#__PURE__*/_jsx("input", {
+        type: "text",
+        placeholder: "enter your email",
+        name: "email",
+        onChange: passValue
+      }), /*#__PURE__*/_jsx("label", {
+        htmlFor: "",
+        children: "Password"
+      }), /*#__PURE__*/_jsx("input", {
+        type: "password",
+        placeholder: "enter your password",
+        name: "password"
+      }), /*#__PURE__*/_jsx("button", {
+        type: "submit",
+        children: "Create Account"
+      })]
+    })]
   });
 }

@@ -26,6 +26,13 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 //endpoints
+app.post("/create-account", (req, res) => {
+  const { username, email, password } = req.body;
+
+  mydb.query("insert into users (username, email, password) values (");
+  if (!username || !email || !password) {
+  }
+});
 
 app.use(express.static("public"));
 

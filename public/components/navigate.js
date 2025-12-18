@@ -5,15 +5,20 @@ import { Home } from "./Home";
 
 //#Routers are pages. use for navigating
 //#check the home jsx
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 export function Navigate() {
-  return /*#__PURE__*/React.createElement(BrowserRouter, null, /*#__PURE__*/React.createElement(Routes, null, /*#__PURE__*/React.createElement(Route, {
-    path: "/",
-    element: /*#__PURE__*/React.createElement(Home, null)
-  }), /*#__PURE__*/React.createElement(Route, {
-    path: "/login",
-    element: /*#__PURE__*/React.createElement(Login, null)
-  }), /*#__PURE__*/React.createElement(Route, {
-    path: "/contact",
-    element: /*#__PURE__*/React.createElement(Contact, null)
-  })));
+  return /*#__PURE__*/_jsx(BrowserRouter, {
+    children: /*#__PURE__*/_jsxs(Routes, {
+      children: [/*#__PURE__*/_jsx(Route, {
+        path: "/",
+        element: /*#__PURE__*/_jsx(Home, {})
+      }), /*#__PURE__*/_jsx(Route, {
+        path: "/login",
+        element: /*#__PURE__*/_jsx(Login, {})
+      }), /*#__PURE__*/_jsx(Route, {
+        path: "/contact",
+        element: /*#__PURE__*/_jsx(Contact, {})
+      })]
+    })
+  });
 }

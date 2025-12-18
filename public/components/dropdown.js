@@ -5,6 +5,7 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 import { useState } from "react";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 function Options() {
   var _useState = useState("Home"),
     _useState2 = _slicedToArray(_useState, 2),
@@ -14,16 +15,21 @@ function Options() {
   var changeOpt = function changeOpt(event) {
     setOptions(event.target.value);
   };
-  return /*#__PURE__*/React.createElement("form", {
-    action: ""
-  }, /*#__PURE__*/React.createElement("select", {
-    value: options,
-    onChange: changeOpt
-  }, /*#__PURE__*/React.createElement("option", {
-    value: "Login"
-  }, "Login"), /*#__PURE__*/React.createElement("option", {
-    value: "Contacts"
-  }, "Contacts"), /*#__PURE__*/React.createElement("option", {
-    value: "Logout"
-  }, "Logout")));
+  return /*#__PURE__*/_jsx("form", {
+    action: "",
+    children: /*#__PURE__*/_jsxs("select", {
+      value: options,
+      onChange: changeOpt,
+      children: [/*#__PURE__*/_jsx("option", {
+        value: "Login",
+        children: "Login"
+      }), /*#__PURE__*/_jsx("option", {
+        value: "Contacts",
+        children: "Contacts"
+      }), /*#__PURE__*/_jsx("option", {
+        value: "Logout",
+        children: "Logout"
+      })]
+    })
+  });
 }

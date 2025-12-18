@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node express-server.js",
     "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "dev:babel": "babel src --out-dir public --watch --extensions \".js,.jsx\""
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
