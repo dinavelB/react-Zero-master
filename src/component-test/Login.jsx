@@ -8,43 +8,69 @@ import "animate.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function LoginPage() {
-  //for class in input
-  const [username, setUsername] = useState(false);
-  const [password, setPassword] = useState(false);
+  const [usernameAnima, setUsername] = useState(false);
+  const [passwordAnima, setPassword] = useState(false);
   const [change, setChange] = useState("");
+  const navigate = useNavigate();
 
-  ///this is how you store a data in use state, in this sample,
-  // we store an object. perfect for sendisn multiple data
   const [data, setData] = useState({
-    //required value
     username: "",
     password: "",
   });
 
-  //implicit return means it return itself, must be no curky brackets,
-  //otherwise explicit, returning an element because it inside the curly bracket
+  const [error, setError] = useState({
+    username: false,
+    password: false,
+  });
+
   const handleChange = (e) => {
-    const { name, value } = e.target; //name is on the input.
-    setData((prev) => ({
-      ...prev, //all previous value
+    const { name, value } = e.target;
+    setData({
+      ...data,
       [name]: value,
-    }));
+    });
+
+    setError({
+      ...error,
+      [name]: !value,
+    });
   };
 
   const sendData = async (e) => {
     e.preventDefault();
 
-    //this is a backend api only
-    const response = await fetch("submit-response", {
+    const { username, password } = data;
+
+    const errors = {
+      username: !username.trim(),
+      password: !password.trim(),
+    };
+
+    setError(errors);
+
+    if (errors.username || errors.password) {
+      console.log("please fill all fields");
+      return;
+    }
+
+    const response = await fetch("/login-account", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    console.log("Data sent successfully: ", data);
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.log(result);
+      setError({
+        username: true,
+        password: true,
+      });
+      return;
+    }
+
     navigate("/home");
   };
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -59,40 +85,45 @@ export function LoginPage() {
               <FontAwesomeIcon
                 icon={faUser}
                 className={`animate__animated inputIcon ${
-                  username ? "smoothBounce" : ""
+                  usernameAnima ? "smoothBounce" : ""
                 }`}
               />
               <input
                 type="text"
                 name="username"
-                placeholder="Enter your username"
+                placeholder={
+                  error.username ? " username required" : "enter your username"
+                }
                 onFocus={() => {
                   setUsername(false);
                   setTimeout(() => setUsername(true), 5);
                 }}
                 onBlur={() => setUsername(false)}
                 onChange={handleChange}
+                className={error.username ? "input-error" : ""}
               />
             </div>
             <div className="inputContainer">
               <FontAwesomeIcon
                 icon={faEye}
                 className={`inputIcon animate__animated ${
-                  password ? "smoothBounce" : ""
+                  passwordAnima ? "smoothBounce" : ""
                 }`}
               />
               <input
                 type="password"
                 name="password"
-                placeholder="Enter your password"
                 onFocus={() => setPassword(true)}
                 onBlur={() => setPassword(false)}
                 onChange={handleChange}
+                placeholder={
+                  error.password ? " password required" : "enter your password"
+                }
+                className={error.password ? "input-error" : ""}
               />
             </div>
             <button id="loginBtn" onClick={sendData}>
-              {" "}
-              Login{" "}
+              Login
             </button>
           </div>
         </section>

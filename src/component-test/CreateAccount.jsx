@@ -18,11 +18,31 @@ export function CreateAccount() {
     password: false,
   });
 
+  const [userDupeN, setUserDupe] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
   const passValue = (e) => {
-    setUserData({
-      ...userData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setError((prev) => ({
+      ...prev,
+      [name]: !value,
+    }));
+
+    if (name === "username" && userDupeN.username) {
+      setUserDupe((prev) => ({
+        ...prev,
+        username: "",
+      }));
+    }
   };
 
   const createAccount = async (e) => {
@@ -52,6 +72,21 @@ export function CreateAccount() {
     });
     const result = await sendData.json();
     console.log(result);
+
+    if (!sendData.ok) {
+      const message =
+        result.error === "user already exists!"
+          ? "username already exists."
+          : "enter your username";
+      console.log(sendData);
+
+      setUserDupe((prev) => ({
+        ...prev,
+        username: message,
+      }));
+      return;
+    }
+
     nav("/login");
   };
 
@@ -62,23 +97,29 @@ export function CreateAccount() {
         <label htmlFor="">Username</label>
         <input
           type="text"
-          placeholder="enter your username"
+          placeholder={
+            userDupeN.username ||
+            (error.username && "username required") ||
+            "enter your username"
+          }
           name="username"
           onChange={passValue}
-          className={error.username ? "input-error" : ""}
+          className={userDupeN.username || error.username ? "input-error" : ""}
         />
         <label htmlFor="">Email</label>
         <input
           type="text"
-          placeholder="enter your email"
           name="email"
           onChange={passValue}
           className={error.email ? "input-error" : ""}
+          placeholder={error.email ? "email required" : "enter your email"}
         />
         <label htmlFor="">Password</label>
         <input
           type="password"
-          placeholder="enter your password"
+          placeholder={
+            error.password ? "password required" : "enter your password"
+          }
           name="password"
           onChange={passValue}
           className={error.password ? "input-error" : ""}

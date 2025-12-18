@@ -24,63 +24,87 @@ import "animate.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 export function LoginPage() {
-  //for class in input
   var _useState = useState(false),
     _useState2 = _slicedToArray(_useState, 2),
-    username = _useState2[0],
+    usernameAnima = _useState2[0],
     setUsername = _useState2[1];
   var _useState3 = useState(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    password = _useState4[0],
+    passwordAnima = _useState4[0],
     setPassword = _useState4[1];
   var _useState5 = useState(""),
     _useState6 = _slicedToArray(_useState5, 2),
     change = _useState6[0],
     setChange = _useState6[1];
-
-  ///this is how you store a data in use state, in this sample,
-  // we store an object. perfect for sendisn multiple data
+  var navigate = useNavigate();
   var _useState7 = useState({
-      //required value
       username: "",
       password: ""
     }),
     _useState8 = _slicedToArray(_useState7, 2),
     data = _useState8[0],
     setData = _useState8[1];
-
-  //implicit return means it return itself, must be no curky brackets,
-  //otherwise explicit, returning an element because it inside the curly bracket
+  var _useState9 = useState({
+      username: false,
+      password: false
+    }),
+    _useState0 = _slicedToArray(_useState9, 2),
+    error = _useState0[0],
+    setError = _useState0[1];
   var handleChange = function handleChange(e) {
     var _e$target = e.target,
       name = _e$target.name,
-      value = _e$target.value; //name is on the input.
-    setData(function (prev) {
-      return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, value));
-    });
+      value = _e$target.value;
+    setData(_objectSpread(_objectSpread({}, data), {}, _defineProperty({}, name, value)));
+    setError(_objectSpread(_objectSpread({}, error), {}, _defineProperty({}, name, !value)));
   };
   var sendData = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var response;
+      var username, password, errors, response, result;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
           case 0:
             e.preventDefault();
-
-            //this is a backend api only
-            _context.n = 1;
-            return fetch("submit-response", {
+            username = data.username, password = data.password;
+            errors = {
+              username: !username.trim(),
+              password: !password.trim()
+            };
+            setError(errors);
+            if (!(errors.username || errors.password)) {
+              _context.n = 1;
+              break;
+            }
+            console.log("please fill all fields");
+            return _context.a(2);
+          case 1:
+            _context.n = 2;
+            return fetch("/login-account", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
               },
               body: JSON.stringify(data)
             });
-          case 1:
-            response = _context.v;
-            console.log("Data sent successfully: ", data);
-            navigate("/home");
           case 2:
+            response = _context.v;
+            _context.n = 3;
+            return response.json();
+          case 3:
+            result = _context.v;
+            if (response.ok) {
+              _context.n = 4;
+              break;
+            }
+            console.log(result);
+            setError({
+              username: true,
+              password: true
+            });
+            return _context.a(2);
+          case 4:
+            navigate("/home");
+          case 5:
             return _context.a(2);
         }
       }, _callee);
@@ -89,7 +113,6 @@ export function LoginPage() {
       return _ref.apply(this, arguments);
     };
   }();
-  var navigate = useNavigate();
   return /*#__PURE__*/_jsx(_Fragment, {
     children: /*#__PURE__*/_jsx("section", {
       id: "container",
@@ -108,11 +131,11 @@ export function LoginPage() {
             className: "inputContainer",
             children: [/*#__PURE__*/_jsx(FontAwesomeIcon, {
               icon: faUser,
-              className: "animate__animated inputIcon ".concat(username ? "smoothBounce" : "")
+              className: "animate__animated inputIcon ".concat(usernameAnima ? "smoothBounce" : "")
             }), /*#__PURE__*/_jsx("input", {
               type: "text",
               name: "username",
-              placeholder: "Enter your username",
+              placeholder: error.username ? " username required" : "enter your username",
               onFocus: function onFocus() {
                 setUsername(false);
                 setTimeout(function () {
@@ -122,29 +145,31 @@ export function LoginPage() {
               onBlur: function onBlur() {
                 return setUsername(false);
               },
-              onChange: handleChange
+              onChange: handleChange,
+              className: error.username ? "input-error" : ""
             })]
           }), /*#__PURE__*/_jsxs("div", {
             className: "inputContainer",
             children: [/*#__PURE__*/_jsx(FontAwesomeIcon, {
               icon: faEye,
-              className: "inputIcon animate__animated ".concat(password ? "smoothBounce" : "")
+              className: "inputIcon animate__animated ".concat(passwordAnima ? "smoothBounce" : "")
             }), /*#__PURE__*/_jsx("input", {
               type: "password",
               name: "password",
-              placeholder: "Enter your password",
               onFocus: function onFocus() {
                 return setPassword(true);
               },
               onBlur: function onBlur() {
                 return setPassword(false);
               },
-              onChange: handleChange
+              onChange: handleChange,
+              placeholder: error.password ? " password required" : "enter your password",
+              className: error.password ? "input-error" : ""
             })]
-          }), /*#__PURE__*/_jsxs("button", {
+          }), /*#__PURE__*/_jsx("button", {
             id: "loginBtn",
             onClick: sendData,
-            children: [" ", "Login", " "]
+            children: "Login"
           })]
         })]
       })

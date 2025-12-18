@@ -38,12 +38,35 @@ export function CreateAccount() {
     _useState4 = _slicedToArray(_useState3, 2),
     error = _useState4[0],
     setError = _useState4[1];
+  var _useState5 = useState({
+      username: "",
+      email: "",
+      password: ""
+    }),
+    _useState6 = _slicedToArray(_useState5, 2),
+    userDupeN = _useState6[0],
+    setUserDupe = _useState6[1];
   var passValue = function passValue(e) {
-    setUserData(_objectSpread(_objectSpread({}, userData), {}, _defineProperty({}, e.target.name, e.target.value)));
+    var _e$target = e.target,
+      name = _e$target.name,
+      value = _e$target.value;
+    setUserData(function (prev) {
+      return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, value));
+    });
+    setError(function (prev) {
+      return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, name, !value));
+    });
+    if (name === "username" && userDupeN.username) {
+      setUserDupe(function (prev) {
+        return _objectSpread(_objectSpread({}, prev), {}, {
+          username: ""
+        });
+      });
+    }
   };
   var createAccount = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var username, email, password, errors, sendData, result;
+      var username, email, password, errors, sendData, result, message;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
           case 0:
@@ -77,8 +100,21 @@ export function CreateAccount() {
           case 3:
             result = _context.v;
             console.log(result);
-            nav("/login");
+            if (sendData.ok) {
+              _context.n = 4;
+              break;
+            }
+            message = result.error === "user already exists!" ? "username already exists." : "enter your username";
+            console.log(sendData);
+            setUserDupe(function (prev) {
+              return _objectSpread(_objectSpread({}, prev), {}, {
+                username: message
+              });
+            });
+            return _context.a(2);
           case 4:
+            nav("/login");
+          case 5:
             return _context.a(2);
         }
       }, _callee);
@@ -100,25 +136,25 @@ export function CreateAccount() {
         children: "Username"
       }), /*#__PURE__*/_jsx("input", {
         type: "text",
-        placeholder: "enter your username",
+        placeholder: userDupeN.username || error.username && "username required" || "enter your username",
         name: "username",
         onChange: passValue,
-        className: error.username ? "input-error" : ""
+        className: userDupeN.username || error.username ? "input-error" : ""
       }), /*#__PURE__*/_jsx("label", {
         htmlFor: "",
         children: "Email"
       }), /*#__PURE__*/_jsx("input", {
         type: "text",
-        placeholder: "enter your email",
         name: "email",
         onChange: passValue,
-        className: error.email ? "input-error" : ""
+        className: error.email ? "input-error" : "",
+        placeholder: error.email ? "email required" : "enter your email"
       }), /*#__PURE__*/_jsx("label", {
         htmlFor: "",
         children: "Password"
       }), /*#__PURE__*/_jsx("input", {
         type: "password",
-        placeholder: "enter your password",
+        placeholder: error.password ? "password required" : "enter your password",
         name: "password",
         onChange: passValue,
         className: error.password ? "input-error" : ""

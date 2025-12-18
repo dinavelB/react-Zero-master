@@ -2,6 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export function Home() {
+  const nav = useNavigate();
+
+  const gotBackLogin = () => {
+    nav("/home");
+  };
   return (
     <>
       <button onClick={gotBackLogin}>Back</button>

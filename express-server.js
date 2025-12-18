@@ -36,22 +36,75 @@ app.post("/create-account", (req, res) => {
     });
   }
 
-  let datas = [];
-  datas.push(username, email, password);
-
   mydb.query(
-    "insert into users (username, email, password) values (?, ?, ?)",
-    datas,
+    "select username from Users where username = ?",
+    [username],
     (error, queryResults) => {
       if (error) {
+        console.log(error);
         return res.status(500).json({
-          error: "there is an error with the data",
+          error: "there is something wrong",
+        });
+      }
+
+      if (queryResults.length > 0) {
+        return res.status(401).json({
+          error: "user already exists!",
+        });
+      }
+
+      const data = [username, email, password];
+      mydb.query(
+        "insert into Users (username, email, password) values (?, ?, ?)",
+        data,
+        (error, queryResults) => {
+          if (error) {
+            console.log(error);
+            return res.status(500).json({
+              message: "database error",
+            });
+          }
+
+          res.status(200).json({
+            message: "user successfully added",
+            id: queryResults.insertId,
+          });
+        }
+      );
+    }
+  );
+});
+
+app.post("/login-account", (req, res) => {
+  const { username, password } = req.body;
+
+  mydb.query(
+    "select password from Users where username = ?",
+    [username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({
+          error: "database error",
+        });
+      }
+
+      if (results.length === 0) {
+        return res.status(401).json({
+          message: "user not found",
+        });
+      }
+
+      const user = results[0];
+
+      if (password != user.password) {
+        return res.status(401).json({
+          error: "login failed",
         });
       }
 
       res.status(200).json({
-        message: "user successfully added",
-        id: queryResults.insertId,
+        message: "user successfully login",
       });
     }
   );
