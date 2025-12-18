@@ -29,17 +29,40 @@ export function CreateAccount() {
     _useState2 = _slicedToArray(_useState, 2),
     userData = _useState2[0],
     setUserData = _useState2[1];
+  //default state
+  var _useState3 = useState({
+      username: false,
+      email: false,
+      password: false
+    }),
+    _useState4 = _slicedToArray(_useState3, 2),
+    error = _useState4[0],
+    setError = _useState4[1];
   var passValue = function passValue(e) {
     setUserData(_objectSpread(_objectSpread({}, userData), {}, _defineProperty({}, e.target.name, e.target.value)));
   };
   var createAccount = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var sendData;
+      var username, email, password, errors, sendData, result;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
           case 0:
             e.preventDefault();
-            _context.n = 1;
+            username = userData.username, email = userData.email, password = userData.password; //if no username email password, the value becomes true, because i inputted a variable
+            errors = {
+              username: !username,
+              email: !email,
+              password: !password
+            };
+            setError(errors);
+            if (!(errors.username || errors.email || errors.password)) {
+              _context.n = 1;
+              break;
+            }
+            console.log("please fill all fields");
+            return _context.a(2);
+          case 1:
+            _context.n = 2;
             return fetch("/create-account", {
               method: "POST",
               headers: {
@@ -47,11 +70,15 @@ export function CreateAccount() {
               },
               body: JSON.stringify(userData)
             });
-          case 1:
-            sendData = _context.v;
-            console.log("Data sent at route: '/create-account'");
-            nav("/login");
           case 2:
+            sendData = _context.v;
+            _context.n = 3;
+            return sendData.json();
+          case 3:
+            result = _context.v;
+            console.log(result);
+            nav("/login");
+          case 4:
             return _context.a(2);
         }
       }, _callee);
@@ -75,7 +102,8 @@ export function CreateAccount() {
         type: "text",
         placeholder: "enter your username",
         name: "username",
-        onChange: passValue
+        onChange: passValue,
+        className: error.username ? "input-error" : ""
       }), /*#__PURE__*/_jsx("label", {
         htmlFor: "",
         children: "Email"
@@ -83,14 +111,17 @@ export function CreateAccount() {
         type: "text",
         placeholder: "enter your email",
         name: "email",
-        onChange: passValue
+        onChange: passValue,
+        className: error.email ? "input-error" : ""
       }), /*#__PURE__*/_jsx("label", {
         htmlFor: "",
         children: "Password"
       }), /*#__PURE__*/_jsx("input", {
         type: "password",
         placeholder: "enter your password",
-        name: "password"
+        name: "password",
+        onChange: passValue,
+        className: error.password ? "input-error" : ""
       }), /*#__PURE__*/_jsx("button", {
         type: "submit",
         children: "Create Account"

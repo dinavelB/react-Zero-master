@@ -11,6 +11,12 @@ export function CreateAccount() {
     email: "",
     password: "",
   });
+  //default state
+  const [error, setError] = useState({
+    username: false,
+    email: false,
+    password: false,
+  });
 
   const passValue = (e) => {
     setUserData({
@@ -21,6 +27,21 @@ export function CreateAccount() {
 
   const createAccount = async (e) => {
     e.preventDefault();
+    const { username, email, password } = userData;
+
+    //if no username email password, the value becomes true, because i inputted a variable
+    const errors = {
+      username: !username,
+      email: !email,
+      password: !password,
+    };
+
+    setError(errors);
+
+    if (errors.username || errors.email || errors.password) {
+      console.log("please fill all fields");
+      return;
+    }
 
     const sendData = await fetch("/create-account", {
       method: "POST",
@@ -29,8 +50,8 @@ export function CreateAccount() {
       },
       body: JSON.stringify(userData),
     });
-
-    console.log("Data sent at route: '/create-account'");
+    const result = await sendData.json();
+    console.log(result);
     nav("/login");
   };
 
@@ -44,6 +65,7 @@ export function CreateAccount() {
           placeholder="enter your username"
           name="username"
           onChange={passValue}
+          className={error.username ? "input-error" : ""}
         />
         <label htmlFor="">Email</label>
         <input
@@ -51,12 +73,15 @@ export function CreateAccount() {
           placeholder="enter your email"
           name="email"
           onChange={passValue}
+          className={error.email ? "input-error" : ""}
         />
         <label htmlFor="">Password</label>
         <input
           type="password"
           placeholder="enter your password"
           name="password"
+          onChange={passValue}
+          className={error.password ? "input-error" : ""}
         />
         <button type="submit">Create Account</button>
       </form>

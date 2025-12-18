@@ -1,5 +1,6 @@
 import express from "express";
 import mydb from "./myDatabase.js";
+import { data } from "react-router-dom";
 const port = 3000;
 const app = express();
 
@@ -29,9 +30,31 @@ app.use(express.json());
 app.post("/create-account", (req, res) => {
   const { username, email, password } = req.body;
 
-  mydb.query("insert into users (username, email, password) values (");
   if (!username || !email || !password) {
+    return res.status(400).json({
+      error: "must fill all fields",
+    });
   }
+
+  let datas = [];
+  datas.push(username, email, password);
+
+  mydb.query(
+    "insert into users (username, email, password) values (?, ?, ?)",
+    datas,
+    (error, queryResults) => {
+      if (error) {
+        return res.status(500).json({
+          error: "there is an error with the data",
+        });
+      }
+
+      res.status(200).json({
+        message: "user successfully added",
+        id: queryResults.insertId,
+      });
+    }
+  );
 });
 
 app.use(express.static("public"));
